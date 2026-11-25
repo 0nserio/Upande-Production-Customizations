@@ -1,0 +1,1491 @@
+diff --git a/upande_production/fixtures/custom_field.json b/upande_production/fixtures/custom_field.json
+index 46a5b12..10d4ca7 100644
+--- a/upande_production/fixtures/custom_field.json
++++ b/upande_production/fixtures/custom_field.json
+@@ -127,5 +127,600 @@
+   "modified": "2026-10-28 18:00:00.000000",
+   "description": "Estimated weight of a full harvest crate of this item; falls back to the crop's figure.",
+   "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_is_fertilizer_request",
++  "fieldtype": "Check",
++  "label": "Is Fertilizer Requisition",
++  "insert_after": "amended_from",
++  "module": "Production",
++  "modified": "2026-11-25 14:00:00.000000",
++  "name": "Material Request-production_is_fertilizer_request",
++  "hidden": 1,
++  "read_only": 1,
++  "no_copy": 1,
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_section",
++  "fieldtype": "Section Break",
++  "label": "Fertilizer Application (MOLFM27)",
++  "insert_after": "production_is_fertilizer_request",
++  "module": "Production",
++  "modified": "2026-11-25 14:00:00.000000",
++  "name": "Material Request-production_fa_section",
++  "depends_on": "eval:doc.production_is_fertilizer_request",
++  "collapsible": 1,
++  "collapsible_depends_on": "eval:doc.docstatus==0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_block",
++  "fieldtype": "Link",
++  "label": "Block",
++  "insert_after": "production_fa_section",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_block",
++  "options": "Production Unit",
++  "mandatory_depends_on": "eval:doc.production_is_fertilizer_request",
++  "description": "One block per requisition"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_farm",
++  "fieldtype": "Link",
++  "label": "Farm",
++  "insert_after": "production_fa_block",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_farm",
++  "options": "Farm",
++  "fetch_from": "production_fa_block.farm",
++  "read_only": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_location",
++  "fieldtype": "Data",
++  "label": "Location",
++  "insert_after": "production_fa_farm",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_location"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_cb1",
++  "fieldtype": "Column Break",
++  "insert_after": "production_fa_location",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_cb1"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_area_ha",
++  "fieldtype": "Float",
++  "label": "Area (ha)",
++  "insert_after": "production_fa_cb1",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_area_ha",
++  "fetch_from": "production_fa_block.area_ha",
++  "precision": "4",
++  "description": "Defaults to the block's area. Change it if only part of the block is treated."
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_crop",
++  "fieldtype": "Link",
++  "label": "Crop",
++  "insert_after": "production_fa_area_ha",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_crop",
++  "options": "Production Crop",
++  "fetch_from": "production_fa_block.crop",
++  "read_only": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_crop_stage",
++  "fieldtype": "Data",
++  "label": "Crop Stage",
++  "insert_after": "production_fa_crop",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_crop_stage"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_cb2",
++  "fieldtype": "Column Break",
++  "insert_after": "production_fa_crop_stage",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_cb2"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_app_week",
++  "fieldtype": "Int",
++  "label": "App Week No",
++  "insert_after": "production_fa_cb2",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_app_week",
++  "read_only": 1,
++  "description": "ISO week of the advice date"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_operator",
++  "fieldtype": "Link",
++  "label": "Operator",
++  "insert_after": "production_fa_app_week",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_operator",
++  "options": "Employee"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_operator_name",
++  "fieldtype": "Data",
++  "label": "Operator Name",
++  "insert_after": "production_fa_operator",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_operator_name",
++  "fetch_from": "production_fa_operator.employee_name",
++  "read_only": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_ticks_section",
++  "fieldtype": "Section Break",
++  "label": "Equipment, Method and Type (tick as appropriate)",
++  "insert_after": "production_fa_operator_name",
++  "module": "Production",
++  "modified": "2026-11-25 14:00:00.000000",
++  "name": "Material Request-production_fa_ticks_section",
++  "depends_on": "eval:doc.production_is_fertilizer_request",
++  "collapsible": 1,
++  "collapsible_depends_on": "eval:doc.docstatus==0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_eq_heading",
++  "fieldtype": "Heading",
++  "label": "Equipment / Machinery Used",
++  "insert_after": "production_fa_ticks_section",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_eq_heading"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_eq_graduated_container",
++  "fieldtype": "Check",
++  "label": "Graduated container",
++  "insert_after": "production_fa_eq_heading",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_eq_graduated_container",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_eq_knapsack",
++  "fieldtype": "Check",
++  "label": "Knapsack",
++  "insert_after": "production_fa_eq_graduated_container",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_eq_knapsack",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_eq_injector_pump",
++  "fieldtype": "Check",
++  "label": "Injector Pump",
++  "insert_after": "production_fa_eq_knapsack",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_eq_injector_pump",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_eq_others",
++  "fieldtype": "Check",
++  "label": "Others",
++  "insert_after": "production_fa_eq_injector_pump",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_eq_others",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_eq_others_detail",
++  "fieldtype": "Data",
++  "label": "Other Equipment",
++  "insert_after": "production_fa_eq_others",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_eq_others_detail",
++  "depends_on": "eval:doc.production_fa_eq_others",
++  "mandatory_depends_on": "eval:doc.production_fa_eq_others"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_cb3",
++  "fieldtype": "Column Break",
++  "insert_after": "production_fa_eq_others_detail",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_cb3"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_m_heading",
++  "fieldtype": "Heading",
++  "label": "Method of Application",
++  "insert_after": "production_fa_cb3",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_m_heading"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_m_broadcasting",
++  "fieldtype": "Check",
++  "label": "Broadcasting",
++  "insert_after": "production_fa_m_heading",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_m_broadcasting",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_m_drilling",
++  "fieldtype": "Check",
++  "label": "Drilling",
++  "insert_after": "production_fa_m_broadcasting",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_m_drilling",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_m_foliar",
++  "fieldtype": "Check",
++  "label": "Spraying (foliar)",
++  "insert_after": "production_fa_m_drilling",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_m_foliar",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_m_fertigation",
++  "fieldtype": "Check",
++  "label": "Fertigation",
++  "insert_after": "production_fa_m_foliar",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_m_fertigation",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_m_banding",
++  "fieldtype": "Check",
++  "label": "Banding",
++  "insert_after": "production_fa_m_fertigation",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_m_banding",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_cb4",
++  "fieldtype": "Column Break",
++  "insert_after": "production_fa_m_banding",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_cb4"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_t_heading",
++  "fieldtype": "Heading",
++  "label": "Type of Application",
++  "insert_after": "production_fa_cb4",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_t_heading"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_t_base_dressing",
++  "fieldtype": "Check",
++  "label": "Base dressing",
++  "insert_after": "production_fa_t_heading",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_t_base_dressing",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_t_top_dressing",
++  "fieldtype": "Check",
++  "label": "Top dressing",
++  "insert_after": "production_fa_t_base_dressing",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_t_top_dressing",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_t_marking",
++  "fieldtype": "Check",
++  "label": "Marking",
++  "insert_after": "production_fa_t_top_dressing",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_t_marking",
++  "default": "0"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_signoff_section",
++  "fieldtype": "Section Break",
++  "label": "Sign-off",
++  "insert_after": "production_fa_t_marking",
++  "module": "Production",
++  "modified": "2026-11-25 14:00:00.000000",
++  "name": "Material Request-production_fa_signoff_section",
++  "depends_on": "eval:doc.production_is_fertilizer_request",
++  "collapsible": 1,
++  "collapsible_depends_on": "eval:doc.docstatus==1"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_prepared_by",
++  "fieldtype": "Link",
++  "label": "Prepared by",
++  "insert_after": "production_fa_signoff_section",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_prepared_by",
++  "options": "User",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_prepared_on",
++  "fieldtype": "Datetime",
++  "label": "Prepared on",
++  "insert_after": "production_fa_prepared_by",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_prepared_on",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_authorized_by",
++  "fieldtype": "Link",
++  "label": "Technical Authorization by",
++  "insert_after": "production_fa_prepared_on",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_authorized_by",
++  "options": "User",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_authorized_on",
++  "fieldtype": "Datetime",
++  "label": "Authorized on",
++  "insert_after": "production_fa_authorized_by",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_authorized_on",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_cb5",
++  "fieldtype": "Column Break",
++  "insert_after": "production_fa_authorized_on",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_cb5"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_issued_by",
++  "fieldtype": "Link",
++  "label": "Issued by (Stores)",
++  "insert_after": "production_fa_cb5",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_issued_by",
++  "options": "User",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_issued_on",
++  "fieldtype": "Datetime",
++  "label": "Issued on",
++  "insert_after": "production_fa_issued_by",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_issued_on",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_collected_by",
++  "fieldtype": "Link",
++  "label": "Collected by (Supervisor)",
++  "insert_after": "production_fa_issued_on",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_collected_by",
++  "options": "User",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_collected_on",
++  "fieldtype": "Datetime",
++  "label": "Collected on",
++  "insert_after": "production_fa_collected_by",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_collected_on",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_cb6",
++  "fieldtype": "Column Break",
++  "insert_after": "production_fa_collected_on",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_cb6"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request",
++  "fieldname": "production_fa_application_date",
++  "fieldtype": "Date",
++  "label": "Actual Date of Application",
++  "insert_after": "production_fa_cb6",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request-production_fa_application_date",
++  "read_only": 1,
++  "no_copy": 1,
++  "allow_on_submit": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request Item",
++  "fieldname": "production_fertilizer_composition",
++  "fieldtype": "Data",
++  "label": "Fertilizer Composition",
++  "insert_after": "item_name",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request Item-production_fertilizer_composition",
++  "fetch_from": "item_code.production_fertilizer_composition",
++  "read_only": 1
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Material Request Item",
++  "fieldname": "production_rate_per_ha",
++  "fieldtype": "Float",
++  "label": "Rate (Qty/ha)",
++  "insert_after": "qty",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Material Request Item-production_rate_per_ha",
++  "read_only": 1,
++  "precision": "3",
++  "in_list_view": 1,
++  "columns": 1,
++  "description": "Qty divided by the block area"
++ },
++ {
++  "doctype": "Custom Field",
++  "dt": "Item",
++  "fieldname": "production_fertilizer_composition",
++  "fieldtype": "Data",
++  "label": "Fertilizer Composition",
++  "insert_after": "item_group",
++  "module": "Production",
++  "modified": "2026-11-25 12:00:00.000000",
++  "name": "Item-production_fertilizer_composition",
++  "description": "e.g. N-P-K 13-2-44. Printed on the Fertilizer Advice ticket.",
++  "depends_on": "eval:doc.item_group==\"Fertilizer\""
+  }
+ ]
+diff --git a/upande_production/hooks.py b/upande_production/hooks.py
+index 7a10400..aa38170 100644
+--- a/upande_production/hooks.py
++++ b/upande_production/hooks.py
+@@ -48,6 +48,9 @@ app_include_js = [
+ 
+ # include js in doctype views
+ # doctype_js = {"doctype" : "public/js/doctype.js"}
++
++# Fertilizer Application ticket (MOLFM27) section and sign-off buttons.
++doctype_js = {"Material Request": "public/js/material_request_fertilizer.js"}
+ # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
+ # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
+ # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
+@@ -146,8 +149,69 @@ doc_events = {
+ 	"Avocado Fruit Count": {
+ 		"after_insert": "upande_production.api.avocadoapi.notify_new_fruit_count",
+ 	},
++	# Fertilizer Application ticket (MOLFM27) on Material Request
++	"Material Request": {
++		"validate": "upande_production.production.logic.fertilizer.material_request_validate",
++		"before_submit": "upande_production.production.logic.fertilizer.material_request_before_submit",
++	},
++	"Stock Entry": {
++		"validate": "upande_production.production.logic.fertilizer.stock_entry_validate",
++		"on_submit": "upande_production.production.logic.fertilizer.stock_entry_on_submit",
++		"on_cancel": "upande_production.production.logic.fertilizer.stock_entry_on_cancel",
++	},
+ }
+ 
++# Custom fields for the Fertilizer Application ticket (MOLFM27) on Material Request.
++FERTILIZER_TICKET_FIELDS = [
++	"Material Request-production_is_fertilizer_request",
++	"Material Request-production_fa_section",
++	"Material Request-production_fa_block",
++	"Material Request-production_fa_farm",
++	"Material Request-production_fa_location",
++	"Material Request-production_fa_cb1",
++	"Material Request-production_fa_area_ha",
++	"Material Request-production_fa_crop",
++	"Material Request-production_fa_crop_stage",
++	"Material Request-production_fa_cb2",
++	"Material Request-production_fa_app_week",
++	"Material Request-production_fa_operator",
++	"Material Request-production_fa_operator_name",
++	"Material Request-production_fa_ticks_section",
++	"Material Request-production_fa_eq_heading",
++	"Material Request-production_fa_eq_graduated_container",
++	"Material Request-production_fa_eq_knapsack",
++	"Material Request-production_fa_eq_injector_pump",
++	"Material Request-production_fa_eq_others",
++	"Material Request-production_fa_eq_others_detail",
++	"Material Request-production_fa_cb3",
++	"Material Request-production_fa_m_heading",
++	"Material Request-production_fa_m_broadcasting",
++	"Material Request-production_fa_m_drilling",
++	"Material Request-production_fa_m_foliar",
++	"Material Request-production_fa_m_fertigation",
++	"Material Request-production_fa_m_banding",
++	"Material Request-production_fa_cb4",
++	"Material Request-production_fa_t_heading",
++	"Material Request-production_fa_t_base_dressing",
++	"Material Request-production_fa_t_top_dressing",
++	"Material Request-production_fa_t_marking",
++	"Material Request-production_fa_signoff_section",
++	"Material Request-production_fa_prepared_by",
++	"Material Request-production_fa_prepared_on",
++	"Material Request-production_fa_authorized_by",
++	"Material Request-production_fa_authorized_on",
++	"Material Request-production_fa_cb5",
++	"Material Request-production_fa_issued_by",
++	"Material Request-production_fa_issued_on",
++	"Material Request-production_fa_collected_by",
++	"Material Request-production_fa_collected_on",
++	"Material Request-production_fa_cb6",
++	"Material Request-production_fa_application_date",
++	"Material Request Item-production_fertilizer_composition",
++	"Material Request Item-production_rate_per_ha",
++	"Item-production_fertilizer_composition",
++]
++
+ # Fixtures
+ # --------
+ # The Expo push-token field lives on the core User doctype (one token per
+@@ -156,7 +220,7 @@ doc_events = {
+ fixtures = [
+ 	{
+ 		"doctype": "Custom Field",
+-		"filters": [["name", "in", ["User-custom_expo_push_tokens", "Stock Entry-production_harvest_batch", "Stock Entry Detail-production_harvest_batch", "Stock Entry Detail-production_unit", "Stock Entry Detail-production_crates", "Item-production_avg_kg_per_crate"]]],
++		"filters": [["name", "in", ["User-custom_expo_push_tokens", "Stock Entry-production_harvest_batch", "Stock Entry Detail-production_harvest_batch", "Stock Entry Detail-production_unit", "Stock Entry Detail-production_crates", "Item-production_avg_kg_per_crate", *FERTILIZER_TICKET_FIELDS]]],
+ 	},
+ 	{
+ 		"doctype": "Role",
+diff --git a/upande_production/production/logic/fertilizer.py b/upande_production/production/logic/fertilizer.py
+new file mode 100644
+index 0000000..3659840
+--- /dev/null
++++ b/upande_production/production/logic/fertilizer.py
+@@ -0,0 +1,312 @@
++"""Fertilizer Application ticket (MOLFM27) on Material Request.
++
++A Material Request whose items are in the Fertilizer item group (or a group
++under it) is a fertilizer requisition. It must be a Material Issue for one
++block, contain fertilizer only, and carry the ticket fields from the paper
++form. The four paper sign-offs are recorded on the request itself:
++
++    Prepared by      who created the request
++    Authorized by    technical authorization, required before submit
++    Issued by        who submitted the Stock Entry against it
++    Collected by     supervisor confirms collection after issue
++    Application date entered when the fertilizer has been applied
++
++The site's Material Request workflow is left alone; these steps sit beside it.
++"""
++
++import frappe
++from frappe import _
++from frappe.utils import cint, flt, getdate, now_datetime, nowdate
++
++from upande_production.production.logic.weeks import iso_of
++
++FERTILIZER_ROOT_GROUP = "Fertilizer"
++REQUEST_TYPE = "Material Issue"
++AUTHORIZE_ROLES = ("Production Manager", "Farm Manager", "System Manager")
++COLLECT_ROLES = (
++	"Production Supervisor",
++	"SCP Production Supervisor",
++	"Supervisor",
++	"Production Manager",
++	"Farm Manager",
++	"System Manager",
++)
++
++# (fieldname, paper label) for each tick-box group on MOLFM27.
++EQUIPMENT = (
++	("production_fa_eq_graduated_container", "Graduated container"),
++	("production_fa_eq_knapsack", "Knapsack"),
++	("production_fa_eq_injector_pump", "Injector Pump"),
++	("production_fa_eq_others", "Others"),
++)
++METHODS = (
++	("production_fa_m_broadcasting", "Broadcasting"),
++	("production_fa_m_drilling", "Drilling"),
++	("production_fa_m_foliar", "Spraying (foliar)"),
++	("production_fa_m_fertigation", "Fertigation"),
++	("production_fa_m_banding", "Banding"),
++)
++APPLICATION_TYPES = (
++	("production_fa_t_base_dressing", "Base dressing"),
++	("production_fa_t_top_dressing", "Top dressing"),
++	("production_fa_t_marking", "Marking"),
++)
++TICK_GROUPS = (
++	(_("Equipment / Machinery Used"), EQUIPMENT),
++	(_("Method of Application"), METHODS),
++	(_("Type of Application"), APPLICATION_TYPES),
++)
++
++
++# ---------------------------------------------------------------- pure helpers
++
++
++def app_week(transaction_date) -> int:
++	"""ISO week number printed as 'App Week No' on the ticket."""
++	return iso_of(transaction_date)[1] if transaction_date else 0
++
++
++def rate_per_ha(qty, area_ha) -> float:
++	area = flt(area_ha)
++	return round(flt(qty) / area, 3) if area > 0 else 0.0
++
++
++def ticked(doc, group) -> list[str]:
++	return [label for fieldname, label in group if cint(doc.get(fieldname))]
++
++
++def ticket_errors(doc, row_groups, fertilizer_groups) -> list[str]:
++	"""Rule check for a fertilizer request. `row_groups` is the item group of
++	each items row, in order. Returns readable messages; empty means valid."""
++	errors = []
++	others = [i + 1 for i, g in enumerate(row_groups) if g not in fertilizer_groups]
++	if others:
++		errors.append(
++			_("A fertilizer requisition can only hold fertilizer items. Move row(s) {0} to a separate Material Request.").format(
++				", ".join(str(i) for i in others)
++			)
++		)
++	if doc.get("material_request_type") != REQUEST_TYPE:
++		errors.append(_("A fertilizer requisition must have Purpose set to {0}.").format(REQUEST_TYPE))
++	if not doc.get("production_fa_block"):
++		errors.append(_("Select the Block the fertilizer is for."))
++	if flt(doc.get("production_fa_area_ha")) <= 0:
++		errors.append(_("Area (ha) must be more than 0."))
++	for label, group in TICK_GROUPS:
++		if not ticked(doc, group):
++			errors.append(_("Tick at least one option under {0}.").format(label))
++	if cint(doc.get("production_fa_eq_others")) and not (doc.get("production_fa_eq_others_detail") or "").strip():
++		errors.append(_("Equipment 'Others' is ticked: say which equipment."))
++	return errors
++
++
++# ---------------------------------------------------------------- lookups
++
++
++def fertilizer_groups() -> set[str]:
++	"""The Fertilizer item group and every group under it (empty if the site has none)."""
++	if not frappe.db.exists("Item Group", FERTILIZER_ROOT_GROUP):
++		return set()
++	from frappe.utils.nestedset import get_descendants_of
++
++	return {FERTILIZER_ROOT_GROUP, *get_descendants_of("Item Group", FERTILIZER_ROOT_GROUP)}
++
++
++def _row_groups(doc) -> list[str]:
++	groups = []
++	for row in doc.get("items") or []:
++		if not row.item_group and row.item_code:
++			row.item_group = frappe.db.get_value("Item", row.item_code, "item_group")
++		groups.append(row.item_group)
++	return groups
++
++
++def is_fertilizer_request(doc, groups=None) -> bool:
++	groups = fertilizer_groups() if groups is None else groups
++	return bool(groups) and any(g in groups for g in _row_groups(doc))
++
++
++def _has_any_role(roles) -> bool:
++	return bool(set(roles) & set(frappe.get_roles()))
++
++
++# ---------------------------------------------------------------- Material Request hooks
++
++
++def material_request_validate(doc, method=None):
++	groups = fertilizer_groups()
++	is_fert = is_fertilizer_request(doc, groups)
++	doc.production_is_fertilizer_request = 1 if is_fert else 0
++	if not is_fert:
++		return
++
++	block = None
++	if doc.production_fa_block:
++		block = frappe.db.get_value(
++			"Production Unit",
++			doc.production_fa_block,
++			["is_group", "farm", "crop", "area_ha", "cost_center"],
++			as_dict=True,
++		)
++		if not block:
++			frappe.throw(_("Block {0} does not exist.").format(doc.production_fa_block))
++		if cint(block.is_group):
++			frappe.throw(_("{0} is a group. Pick a single block.").format(doc.production_fa_block))
++		doc.production_fa_farm = block.farm
++		doc.production_fa_crop = block.crop
++		if flt(doc.production_fa_area_ha) <= 0:
++			doc.production_fa_area_ha = block.area_ha
++
++	errors = ticket_errors(doc, _row_groups(doc), groups)
++	if errors:
++		frappe.throw("<br>".join(errors), title=_("Fertilizer Application ticket incomplete"))
++
++	doc.production_fa_app_week = app_week(doc.transaction_date)
++	for row in doc.items:
++		row.production_rate_per_ha = rate_per_ha(row.qty, doc.production_fa_area_ha)
++		if block and block.cost_center:
++			row.cost_center = block.cost_center
++	if block and block.cost_center and doc.meta.has_field("custom_cost_center"):
++		doc.custom_cost_center = block.cost_center
++
++	if not doc.production_fa_prepared_by:
++		doc.production_fa_prepared_by = doc.owner or frappe.session.user
++		doc.production_fa_prepared_on = doc.creation or now_datetime()
++
++
++def material_request_before_submit(doc, method=None):
++	if cint(doc.production_is_fertilizer_request) and not doc.production_fa_authorized_by:
++		frappe.throw(
++			_("This fertilizer requisition needs technical authorization before it can be approved. Ask a {0} to click Authorize.").format(
++				_(" or ").join(AUTHORIZE_ROLES[:2])
++			),
++			title=_("Not authorized yet"),
++		)
++
++
++# ---------------------------------------------------------------- Stock Entry hooks
++
++
++def _fertilizer_requests(stock_entry) -> dict[str, frappe._dict]:
++	names = {r.material_request for r in stock_entry.get("items") or [] if r.get("material_request")}
++	if not names:
++		return {}
++	rows = frappe.get_all(
++		"Material Request",
++		filters={"name": ["in", list(names)], "production_is_fertilizer_request": 1},
++		fields=["name", "production_fa_block", "production_fa_issued_by"],
++	)
++	return {r.name: r for r in rows}
++
++
++def stock_entry_validate(doc, method=None):
++	requests = _fertilizer_requests(doc)
++	if not requests:
++		return
++	has_unit = frappe.get_meta("Stock Entry Detail").has_field("production_unit")
++	for row in doc.items:
++		mr = requests.get(row.get("material_request"))
++		if not mr or not mr.production_fa_block:
++			continue
++		if has_unit:
++			row.production_unit = mr.production_fa_block
++		if not row.cost_center:
++			row.cost_center = frappe.db.get_value("Production Unit", mr.production_fa_block, "cost_center")
++
++
++def stock_entry_on_submit(doc, method=None):
++	for mr in _fertilizer_requests(doc).values():
++		if not mr.production_fa_issued_by:
++			frappe.db.set_value(
++				"Material Request",
++				mr.name,
++				{"production_fa_issued_by": frappe.session.user, "production_fa_issued_on": now_datetime()},
++			)
++
++
++def stock_entry_on_cancel(doc, method=None):
++	for mr in _fertilizer_requests(doc).values():
++		still_issued = frappe.db.sql(
++			"""select 1 from `tabStock Entry Detail` d join `tabStock Entry` s on s.name = d.parent
++			where d.material_request = %s and s.docstatus = 1 and s.name != %s limit 1""",
++			(mr.name, doc.name),
++		)
++		if still_issued:
++			continue
++		if frappe.db.get_value("Material Request", mr.name, "production_fa_collected_by"):
++			frappe.throw(
++				_("{0} has already been collected by the supervisor, so its issue cannot be cancelled.").format(mr.name)
++			)
++		frappe.db.set_value(
++			"Material Request", mr.name, {"production_fa_issued_by": None, "production_fa_issued_on": None}
++		)
++
++
++# ---------------------------------------------------------------- sign-off actions
++
++
++def _load_request(name):
++	doc = frappe.get_doc("Material Request", name)
++	doc.check_permission("read")
++	if not cint(doc.production_is_fertilizer_request):
++		frappe.throw(_("{0} is not a fertilizer requisition.").format(name))
++	return doc
++
++
++@frappe.whitelist()
++def get_fertilizer_groups():
++	return sorted(fertilizer_groups())
++
++
++@frappe.whitelist()
++def authorize(name):
++	doc = _load_request(name)
++	if not _has_any_role(AUTHORIZE_ROLES):
++		frappe.throw(_("Only a {0} can give technical authorization.").format(_(" or ").join(AUTHORIZE_ROLES[:2])), frappe.PermissionError)
++	if doc.docstatus != 0:
++		frappe.throw(_("{0} is already submitted.").format(name))
++	if doc.production_fa_authorized_by:
++		frappe.throw(_("{0} was already authorized by {1}.").format(name, doc.production_fa_authorized_by))
++	doc.db_set(
++		{"production_fa_authorized_by": frappe.session.user, "production_fa_authorized_on": now_datetime()},
++		notify=True,
++	)
++	doc.add_comment("Info", _("Technical authorization given (MOLFM27)."))
++
++
++@frappe.whitelist()
++def mark_collected(name):
++	doc = _load_request(name)
++	if not _has_any_role(COLLECT_ROLES):
++		frappe.throw(_("Only a supervisor can confirm collection."), frappe.PermissionError)
++	if not doc.production_fa_issued_by:
++		frappe.throw(_("The stores have not issued {0} yet.").format(name))
++	if doc.production_fa_collected_by:
++		frappe.throw(_("{0} was already collected by {1}.").format(name, doc.production_fa_collected_by))
++	doc.db_set(
++		{"production_fa_collected_by": frappe.session.user, "production_fa_collected_on": now_datetime()},
++		notify=True,
++	)
++	doc.add_comment("Info", _("Collected by supervisor (MOLFM27)."))
++
++
++@frappe.whitelist()
++def mark_applied(name, application_date):
++	doc = _load_request(name)
++	if not _has_any_role(COLLECT_ROLES):
++		frappe.throw(_("Only a supervisor can record the application date."), frappe.PermissionError)
++	if not doc.production_fa_collected_by:
++		frappe.throw(_("Confirm collection before recording the application date."))
++	if doc.production_fa_application_date:
++		frappe.throw(
++			_("{0} already has an application date ({1}).").format(
++				name, frappe.format(doc.production_fa_application_date, "Date")
++			)
++		)
++	applied = getdate(application_date)
++	if applied > getdate(nowdate()):
++		frappe.throw(_("The application date cannot be in the future."))
++	if applied < getdate(doc.transaction_date):
++		frappe.throw(_("The application date cannot be before the advice date ({0}).").format(doc.transaction_date))
++	doc.db_set({"production_fa_application_date": applied}, notify=True)
++	doc.add_comment("Info", _("Applied on {0} (MOLFM27).").format(frappe.format(applied, "Date")))
+diff --git a/upande_production/production/print_format/__init__.py b/upande_production/production/print_format/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/upande_production/production/print_format/molfm27_fertilizer_advice/__init__.py b/upande_production/production/print_format/molfm27_fertilizer_advice/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/upande_production/production/print_format/molfm27_fertilizer_advice/molfm27_fertilizer_advice.json b/upande_production/production/print_format/molfm27_fertilizer_advice/molfm27_fertilizer_advice.json
+new file mode 100644
+index 0000000..0f2336f
+--- /dev/null
++++ b/upande_production/production/print_format/molfm27_fertilizer_advice/molfm27_fertilizer_advice.json
+@@ -0,0 +1,29 @@
++{
++ "align_labels_right": 0,
++ "creation": "2026-11-25 12:00:00.000000",
++ "custom_format": 1,
++ "disabled": 0,
++ "doc_type": "Material Request",
++ "docstatus": 0,
++ "doctype": "Print Format",
++ "font_size": 0,
++ "html": "{%- macro tick(v) -%}<span class=\"fa-box\">{% if v %}&#10003;{% endif %}</span>{%- endmacro -%}\n{%- macro who(user) -%}{% if user %}{{ frappe.db.get_value(\"User\", user, \"full_name\") or user }}{% endif %}{%- endmacro -%}\n{%- macro when(v) -%}{% if v %}{{ frappe.format(v, {\"fieldtype\": \"Datetime\"}) }}{% endif %}{%- endmacro -%}\n<style>\n.fa { font-size: 11.5px; color: #000; }\n.fa table { width: 100%; border-collapse: collapse; }\n.fa td, .fa th { border: 1px solid #000; padding: 4px 6px; vertical-align: top; }\n.fa th { background: #eee; text-align: left; }\n.fa .head td { border: none; padding: 2px 0; }\n.fa .title { font-size: 15px; font-weight: bold; text-align: center; }\n.fa .code { text-align: right; font-weight: bold; }\n.fa .lbl { font-weight: bold; white-space: nowrap; }\n.fa .fa-box { display: inline-block; width: 11px; height: 11px; border: 1px solid #000; text-align: center; line-height: 10px; font-size: 10px; margin-right: 4px; }\n.fa .num { text-align: right; }\n.fa .gap { height: 10px; }\n.fa .ctrl td { font-size: 9.5px; }\n</style>\n<div class=\"fa\">\n<table class=\"head\">\n  <tr><td style=\"width:33%\"></td><td class=\"title\">Fertilizer Advice</td><td class=\"code\">MOLFM27</td></tr>\n  <tr><td colspan=\"3\" class=\"code\" style=\"font-weight:normal\">{{ doc.name }}</td></tr>\n</table>\n<div class=\"gap\"></div>\n<table>\n  <tr>\n    <td><span class=\"lbl\">Farm Name:</span> {{ doc.production_fa_farm or \"\" }}</td>\n    <td colspan=\"2\"><span class=\"lbl\">Location:</span> {{ doc.production_fa_location or \"\" }}</td>\n  </tr>\n  <tr>\n    <td><span class=\"lbl\">App Week No:</span> {{ doc.production_fa_app_week or \"\" }}</td>\n    <td><span class=\"lbl\">Advice Date:</span> {{ frappe.format(doc.transaction_date, {\"fieldtype\": \"Date\"}) }}</td>\n    <td><span class=\"lbl\">Operator Name:</span> {{ doc.production_fa_operator_name or \"\" }}</td>\n  </tr>\n  <tr>\n    <td><span class=\"lbl\">Block Name:</span> {{ doc.production_fa_block or \"\" }}</td>\n    <td><span class=\"lbl\">Area (ha):</span> {{ frappe.format(doc.production_fa_area_ha, {\"fieldtype\": \"Float\", \"precision\": 2}) }}</td>\n    <td><span class=\"lbl\">Crop:</span> {{ doc.production_fa_crop or \"\" }} &nbsp; <span class=\"lbl\">Crop Stage:</span> {{ doc.production_fa_crop_stage or \"\" }}</td>\n  </tr>\n</table>\n<div class=\"gap\"></div>\n<table>\n  <tr><th style=\"width:33%\">Equipment/ Machinery Used: (Tick as appropriate)</th><th style=\"width:34%\">Method of Application: (Tick as appropriate)</th><th>Type of Application: (Tick as appropriate)</th></tr>\n  <tr>\n    <td>\n      {{ tick(doc.production_fa_eq_graduated_container) }}Graduated container<br>\n      {{ tick(doc.production_fa_eq_knapsack) }}Knapsack<br>\n      {{ tick(doc.production_fa_eq_injector_pump) }}Injector Pump<br>\n      {{ tick(doc.production_fa_eq_others) }}Others: {{ doc.production_fa_eq_others_detail or \"\" }}\n    </td>\n    <td>\n      {{ tick(doc.production_fa_m_broadcasting) }}Broadcasting<br>\n      {{ tick(doc.production_fa_m_drilling) }}Drilling<br>\n      {{ tick(doc.production_fa_m_foliar) }}Spraying (foliar)<br>\n      {{ tick(doc.production_fa_m_fertigation) }}Fertigation<br>\n      {{ tick(doc.production_fa_m_banding) }}Banding\n    </td>\n    <td>\n      {{ tick(doc.production_fa_t_base_dressing) }}Base dressing<br>\n      {{ tick(doc.production_fa_t_top_dressing) }}Top dressing<br>\n      {{ tick(doc.production_fa_t_marking) }}Marking\n    </td>\n  </tr>\n</table>\n<div class=\"gap\"></div>\n<table>\n  <tr><th>Fertilizer Type</th><th>Fertilizer Composition</th><th class=\"num\">Total Fertilizer Qty</th><th class=\"num\">Application Rate (Qty/ha)</th></tr>\n  {%- for row in doc.items %}\n  <tr>\n    <td>{{ row.item_name or row.item_code }}</td>\n    <td>{{ row.production_fertilizer_composition or \"\" }}</td>\n    <td class=\"num\">{{ frappe.format(row.qty, {\"fieldtype\": \"Float\"}) }} {{ row.uom }}</td>\n    <td class=\"num\">{{ frappe.format(row.production_rate_per_ha, {\"fieldtype\": \"Float\", \"precision\": 3}) }} {{ row.uom }}/ha</td>\n  </tr>\n  {%- endfor %}\n</table>\n<div class=\"gap\"></div>\n<table>\n  <tr><td class=\"lbl\" style=\"width:30%\">Actual Date of Application:</td><td colspan=\"2\">{% if doc.production_fa_application_date %}{{ frappe.format(doc.production_fa_application_date, {\"fieldtype\": \"Date\"}) }}{% endif %}</td></tr>\n  <tr><td class=\"lbl\">Prepared by:</td><td>{{ who(doc.production_fa_prepared_by) }}</td><td style=\"width:30%\">Date: {{ when(doc.production_fa_prepared_on) }}</td></tr>\n  <tr><td class=\"lbl\">Technical Authorization by:</td><td>{{ who(doc.production_fa_authorized_by) }}</td><td>Date: {{ when(doc.production_fa_authorized_on) }}</td></tr>\n  <tr><td class=\"lbl\">Issued by (Stores person):</td><td>{{ who(doc.production_fa_issued_by) }}</td><td>Date: {{ when(doc.production_fa_issued_on) }}</td></tr>\n  <tr><td class=\"lbl\">Collected by (Supervisor):</td><td>{{ who(doc.production_fa_collected_by) }}</td><td>Date: {{ when(doc.production_fa_collected_on) }}</td></tr>\n</table>\n<p style=\"font-size:9.5px;margin:4px 0 0\">Sign-offs are recorded electronically in ERPNext with the user and time of each step.</p>\n<div class=\"gap\"></div>\n<table class=\"ctrl\">\n  <tr><td colspan=\"3\"><b>MUTARA ORCHARDS LIMITED</b></td><td colspan=\"5\"><b>Field Food Safety and Quality Manual</b></td><td colspan=\"3\"><b>Effective Date: 16th March 2026</b></td></tr>\n  <tr><th>Document No.</th><th>Issue No.</th><th>Revision No.</th><th>Revision Date</th><th>Issue Date</th><th>Supersedes</th><th>Reason for review</th><th>Page</th><th>Prepared by</th><th colspan=\"2\">Approved by</th></tr>\n  <tr><td>Field/FSQM/2</td><td>002</td><td>001</td><td>March 11th, 2026</td><td>March 12th, 2026</td><td>Previous</td><td>New Changes</td><td>1 of 1</td><td>Compliance Manager</td><td colspan=\"2\">General Manager</td></tr>\n</table>\n</div>\n",
++ "idx": 0,
++ "line_breaks": 0,
++ "margin_bottom": 15.0,
++ "margin_left": 15.0,
++ "margin_right": 15.0,
++ "margin_top": 15.0,
++ "modified": "2026-11-25 12:00:00.000000",
++ "modified_by": "Administrator",
++ "module": "Production",
++ "name": "MOLFM27 Fertilizer Advice",
++ "owner": "Administrator",
++ "page_number": "Hide",
++ "print_format_builder": 0,
++ "print_format_builder_beta": 0,
++ "print_format_type": "Jinja",
++ "raw_printing": 0,
++ "show_section_headings": 0,
++ "standard": "Yes"
++}
+diff --git a/upande_production/production/report/__init__.py b/upande_production/production/report/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/upande_production/production/report/input_issuance_record/__init__.py b/upande_production/production/report/input_issuance_record/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/upande_production/production/report/input_issuance_record/input_issuance_record.js b/upande_production/production/report/input_issuance_record/input_issuance_record.js
+new file mode 100644
+index 0000000..3a4eb59
+--- /dev/null
++++ b/upande_production/production/report/input_issuance_record/input_issuance_record.js
+@@ -0,0 +1,46 @@
++frappe.query_reports["Input Issuance Record"] = {
++	filters: [
++		{
++			fieldname: "company",
++			label: __("Company"),
++			fieldtype: "Link",
++			options: "Company",
++			default: frappe.defaults.get_user_default("Company"),
++		},
++		{
++			fieldname: "from_date",
++			label: __("From Date"),
++			fieldtype: "Date",
++			default: frappe.datetime.add_months(frappe.datetime.get_today(), -1),
++			reqd: 1,
++		},
++		{
++			fieldname: "to_date",
++			label: __("To Date"),
++			fieldtype: "Date",
++			default: frappe.datetime.get_today(),
++			reqd: 1,
++		},
++		{
++			fieldname: "item_group",
++			label: __("Category of Input"),
++			fieldtype: "Link",
++			options: "Item Group",
++			default: "Fertilizer",
++		},
++		{
++			fieldname: "warehouse",
++			label: __("From Store"),
++			fieldtype: "Link",
++			options: "Warehouse",
++			get_query: () => ({ filters: { is_group: 0 } }),
++		},
++		{
++			fieldname: "block",
++			label: __("Block"),
++			fieldtype: "Link",
++			options: "Production Unit",
++			get_query: () => ({ filters: { is_group: 0 } }),
++		},
++	],
++};
+diff --git a/upande_production/production/report/input_issuance_record/input_issuance_record.json b/upande_production/production/report/input_issuance_record/input_issuance_record.json
+new file mode 100644
+index 0000000..d570457
+--- /dev/null
++++ b/upande_production/production/report/input_issuance_record/input_issuance_record.json
+@@ -0,0 +1,35 @@
++{
++ "add_total_row": 0,
++ "columns": [],
++ "creation": "2026-11-25 12:00:00.000000",
++ "disabled": 0,
++ "docstatus": 0,
++ "doctype": "Report",
++ "filters": [],
++ "idx": 0,
++ "is_standard": "Yes",
++ "letter_head": null,
++ "modified": "2026-11-25 12:00:00.000000",
++ "modified_by": "Administrator",
++ "module": "Production",
++ "name": "Input Issuance Record",
++ "owner": "Administrator",
++ "prepared_report": 0,
++ "ref_doctype": "Stock Entry",
++ "report_name": "Input Issuance Record",
++ "report_type": "Script Report",
++ "roles": [
++  {
++   "role": "Stock User"
++  },
++  {
++   "role": "Stock Manager"
++  },
++  {
++   "role": "Production Manager"
++  },
++  {
++   "role": "Production Supervisor"
++  }
++ ]
++}
+diff --git a/upande_production/production/report/input_issuance_record/input_issuance_record.py b/upande_production/production/report/input_issuance_record/input_issuance_record.py
+new file mode 100644
+index 0000000..ce22251
+--- /dev/null
++++ b/upande_production/production/report/input_issuance_record/input_issuance_record.py
+@@ -0,0 +1,100 @@
++"""Input Issuance Record (MOLFM07): every input issued from a store, with the
++requisition it was issued against and who authorized, issued and collected it.
++Built from submitted Material Issue stock entries."""
++
++import frappe
++from frappe import _
++from frappe.utils import getdate
++from frappe.utils.nestedset import get_descendants_of
++
++
++def execute(filters=None):
++	filters = frappe._dict(filters or {})
++	if filters.from_date and filters.to_date and getdate(filters.from_date) > getdate(filters.to_date):
++		frappe.throw(_("From Date must be on or before To Date."))
++	return columns(), data(filters)
++
++
++def columns():
++	return [
++		{"fieldname": "posting_date", "label": _("Date"), "fieldtype": "Date", "width": 95},
++		{"fieldname": "item_code", "label": _("Input"), "fieldtype": "Link", "options": "Item", "width": 110},
++		{"fieldname": "item_name", "label": _("Input Name"), "fieldtype": "Data", "width": 170},
++		{"fieldname": "item_group", "label": _("Category"), "fieldtype": "Link", "options": "Item Group", "width": 110},
++		{"fieldname": "material_request", "label": _("Ref: Allocation"), "fieldtype": "Link", "options": "Material Request", "width": 150},
++		{"fieldname": "block", "label": _("Block"), "fieldtype": "Link", "options": "Production Unit", "width": 90},
++		{"fieldname": "authorized_by", "label": _("Authorized by"), "fieldtype": "Data", "width": 140},
++		{"fieldname": "qty", "label": _("Quantity"), "fieldtype": "Float", "width": 90},
++		{"fieldname": "uom", "label": _("UOM"), "fieldtype": "Link", "options": "UOM", "width": 60},
++		{"fieldname": "issued_by", "label": _("Issued by"), "fieldtype": "Data", "width": 140},
++		{"fieldname": "collected_by", "label": _("Collected by"), "fieldtype": "Data", "width": 140},
++		{"fieldname": "application_date", "label": _("Applied on"), "fieldtype": "Date", "width": 95},
++		{"fieldname": "s_warehouse", "label": _("From Store"), "fieldtype": "Link", "options": "Warehouse", "width": 150},
++		{"fieldname": "stock_entry", "label": _("Stock Entry"), "fieldtype": "Link", "options": "Stock Entry", "width": 150},
++	]
++
++
++def data(filters):
++	se = frappe.qb.DocType("Stock Entry")
++	sed = frappe.qb.DocType("Stock Entry Detail")
++	mr = frappe.qb.DocType("Material Request")
++	q = (
++		frappe.qb.from_(sed)
++		.join(se).on(se.name == sed.parent)
++		.left_join(mr).on(mr.name == sed.material_request)
++		.select(
++			se.posting_date,
++			sed.item_code,
++			sed.item_name,
++			sed.material_request,
++			sed.qty,
++			sed.uom,
++			sed.s_warehouse,
++			se.name.as_("stock_entry"),
++			se.owner.as_("se_owner"),
++			mr.production_fa_block.as_("block"),
++			mr.production_fa_authorized_by.as_("authorized_by"),
++			mr.production_fa_issued_by.as_("issued_by"),
++			mr.production_fa_collected_by.as_("collected_by"),
++			mr.production_fa_application_date.as_("application_date"),
++		)
++		.where((se.docstatus == 1) & (se.purpose == "Material Issue"))
++		.orderby(se.posting_date)
++		.orderby(se.posting_time)
++		.orderby(sed.idx)
++	)
++	if filters.company:
++		q = q.where(se.company == filters.company)
++	if filters.from_date:
++		q = q.where(se.posting_date >= filters.from_date)
++	if filters.to_date:
++		q = q.where(se.posting_date <= filters.to_date)
++	if filters.warehouse:
++		q = q.where(sed.s_warehouse == filters.warehouse)
++	if filters.block:
++		q = q.where(mr.production_fa_block == filters.block)
++	if filters.item_group:
++		groups = [filters.item_group, *get_descendants_of("Item Group", filters.item_group)]
++		item = frappe.qb.DocType("Item")
++		q = q.join(item).on(item.name == sed.item_code).where(item.item_group.isin(groups))
++
++	rows = q.run(as_dict=True)
++	groups = dict(
++		frappe.get_all("Item", filters={"name": ["in", list({r.item_code for r in rows}) or [""]]}, fields=["name", "item_group"], as_list=True)
++	)
++	names = {}
++
++	def full_name(user):
++		if not user:
++			return None
++		if user not in names:
++			names[user] = frappe.db.get_value("User", user, "full_name") or user
++		return names[user]
++
++	for r in rows:
++		r.item_group = groups.get(r.item_code)
++		r.authorized_by = full_name(r.authorized_by)
++		r.issued_by = full_name(r.issued_by or r.se_owner)
++		r.collected_by = full_name(r.collected_by)
++		del r["se_owner"]
++	return rows
+diff --git a/upande_production/production/tests/test_fertilizer_ticket.py b/upande_production/production/tests/test_fertilizer_ticket.py
+new file mode 100644
+index 0000000..07725e0
+--- /dev/null
++++ b/upande_production/production/tests/test_fertilizer_ticket.py
+@@ -0,0 +1,60 @@
++import unittest
++
++import frappe
++
++from upande_production.production.logic.fertilizer import app_week, rate_per_ha, ticket_errors
++
++FERT = {"Fertilizer"}
++
++
++def _ticket(**kw):
++	base = {
++		"material_request_type": "Material Issue",
++		"production_fa_block": "P1-B1",
++		"production_fa_area_ha": 2.13,
++		"production_fa_eq_injector_pump": 1,
++		"production_fa_m_fertigation": 1,
++		"production_fa_t_top_dressing": 1,
++	}
++	base.update(kw)
++	return frappe._dict(base)
++
++
++class TestFertilizerTicket(unittest.TestCase):
++	def test_app_week_is_iso_week(self):
++		self.assertEqual(app_week("2026-11-25"), 48)
++		self.assertEqual(app_week("2027-01-02"), 53)
++		self.assertEqual(app_week(None), 0)
++
++	def test_rate_per_ha(self):
++		self.assertEqual(rate_per_ha(42.6, 2.13), 20.0)
++		self.assertEqual(rate_per_ha(10, 3), 3.333)
++		self.assertEqual(rate_per_ha(10, 0), 0.0)
++
++	def test_complete_ticket_has_no_errors(self):
++		self.assertEqual(ticket_errors(_ticket(), ["Fertilizer", "Fertilizer"], FERT), [])
++
++	def test_mixed_items_are_rejected(self):
++		errors = ticket_errors(_ticket(), ["Fertilizer", "Consumables", "Fertilizer", "Chemicals"], FERT)
++		self.assertEqual(len(errors), 1)
++		self.assertIn("2, 4", errors[0])
++
++	def test_purpose_block_and_area_required(self):
++		errors = ticket_errors(
++			_ticket(material_request_type="Purchase", production_fa_block=None, production_fa_area_ha=0), ["Fertilizer"], FERT
++		)
++		self.assertEqual(len(errors), 3)
++
++	def test_each_tick_group_needs_one_tick(self):
++		doc = _ticket(production_fa_eq_injector_pump=0, production_fa_m_fertigation=0, production_fa_t_top_dressing=0)
++		self.assertEqual(len(ticket_errors(doc, ["Fertilizer"], FERT)), 3)
++
++	def test_several_ticks_allowed(self):
++		doc = _ticket(production_fa_m_broadcasting=1, production_fa_m_banding=1, production_fa_t_marking=1)
++		self.assertEqual(ticket_errors(doc, ["Fertilizer"], FERT), [])
++
++	def test_others_needs_detail(self):
++		doc = _ticket(production_fa_eq_others=1)
++		self.assertEqual(len(ticket_errors(doc, ["Fertilizer"], FERT)), 1)
++		doc.production_fa_eq_others_detail = "Tractor spreader"
++		self.assertEqual(ticket_errors(doc, ["Fertilizer"], FERT), [])
+diff --git a/upande_production/public/js/material_request_fertilizer.js b/upande_production/public/js/material_request_fertilizer.js
+new file mode 100644
+index 0000000..730935a
+--- /dev/null
++++ b/upande_production/public/js/material_request_fertilizer.js
+@@ -0,0 +1,157 @@
++// Fertilizer Application ticket (MOLFM27) on Material Request.
++// The section shows when any items row is in the Fertilizer item group;
++// the server (production/logic/fertilizer.py) enforces the same rules on save.
++
++const FA_API = "upande_production.production.logic.fertilizer";
++const FA_AUTHORIZE_ROLES = ["Production Manager", "Farm Manager", "System Manager"];
++const FA_COLLECT_ROLES = [
++	"Production Supervisor",
++	"SCP Production Supervisor",
++	"Supervisor",
++	"Production Manager",
++	"Farm Manager",
++	"System Manager",
++];
++
++let fa_groups_promise = null;
++function fa_groups() {
++	if (!fa_groups_promise) {
++		fa_groups_promise = frappe
++			.call({ method: `${FA_API}.get_fertilizer_groups` })
++			.then((r) => new Set(r.message || []))
++			.catch(() => {
++				fa_groups_promise = null;
++				return new Set();
++			});
++	}
++	return fa_groups_promise;
++}
++
++const fa_has_role = (roles) => roles.some((r) => frappe.user.has_role(r));
++
++async function fa_sync(frm) {
++	if (frm.doc.docstatus !== 0) return;
++	const groups = await fa_groups();
++	const is_fert = (frm.doc.items || []).some((r) => r.item_group && groups.has(r.item_group)) ? 1 : 0;
++	if (cint(frm.doc.production_is_fertilizer_request) !== is_fert) {
++		await frm.set_value("production_is_fertilizer_request", is_fert);
++	}
++	if (is_fert && frm.doc.material_request_type !== "Material Issue") {
++		await frm.set_value("material_request_type", "Material Issue");
++	}
++	fa_update_rates(frm);
++}
++
++function fa_update_rates(frm) {
++	if (frm.doc.docstatus !== 0 || !cint(frm.doc.production_is_fertilizer_request)) return;
++	const area = flt(frm.doc.production_fa_area_ha);
++	(frm.doc.items || []).forEach((row) => {
++		const rate = area > 0 ? flt(flt(row.qty) / area, 3) : 0;
++		if (flt(row.production_rate_per_ha) !== rate) {
++			frappe.model.set_value(row.doctype, row.name, "production_rate_per_ha", rate);
++		}
++	});
++}
++
++function fa_app_week(frm) {
++	if (frm.doc.docstatus !== 0 || !frm.doc.transaction_date) return;
++	// ISO week, same as the server's iso_of()
++	const d = moment(frm.doc.transaction_date);
++	if (cint(frm.doc.production_fa_app_week) !== d.isoWeek()) {
++		frm.set_value("production_fa_app_week", d.isoWeek());
++	}
++}
++
++function fa_sign_off_buttons(frm) {
++	if (!cint(frm.doc.production_is_fertilizer_request) || frm.is_new()) return;
++	const group = __("Fertilizer Ticket");
++	const d = frm.doc;
++
++	if (d.docstatus === 0 && !d.production_fa_authorized_by && !frm.is_dirty() && fa_has_role(FA_AUTHORIZE_ROLES)) {
++		frm.add_custom_button(
++			__("Authorize"),
++			() =>
++				frappe.confirm(
++					__("Give technical authorization for {0}? Your name and the time are recorded on the ticket.", [d.name]),
++					() => frappe.call({ method: `${FA_API}.authorize`, args: { name: d.name } }).then(() => frm.reload_doc())
++				),
++			group
++		);
++	}
++	if (d.docstatus === 1 && d.production_fa_issued_by && !d.production_fa_collected_by && fa_has_role(FA_COLLECT_ROLES)) {
++		frm.add_custom_button(
++			__("Mark Collected"),
++			() =>
++				frappe.confirm(__("Confirm you have collected the fertilizer for {0}?", [d.name]), () =>
++					frappe.call({ method: `${FA_API}.mark_collected`, args: { name: d.name } }).then(() => frm.reload_doc())
++				),
++			group
++		);
++	}
++	if (d.docstatus === 1 && d.production_fa_collected_by && !d.production_fa_application_date && fa_has_role(FA_COLLECT_ROLES)) {
++		frm.add_custom_button(
++			__("Mark Applied"),
++			() =>
++				frappe.prompt(
++					{
++						fieldname: "application_date",
++						fieldtype: "Date",
++						label: __("Actual Date of Application"),
++						reqd: 1,
++						default: frappe.datetime.get_today(),
++					},
++					(v) =>
++						frappe
++							.call({
++								method: `${FA_API}.mark_applied`,
++								args: { name: d.name, application_date: v.application_date },
++							})
++							.then(() => frm.reload_doc()),
++					__("Fertilizer applied"),
++					__("Save")
++				),
++			group
++		);
++	}
++
++	const steps = [
++		[__("Prepared"), d.production_fa_prepared_by],
++		[__("Authorized"), d.production_fa_authorized_by],
++		[__("Issued"), d.production_fa_issued_by],
++		[__("Collected"), d.production_fa_collected_by],
++		[__("Applied"), d.production_fa_application_date],
++	];
++	const next = steps.find(([, done]) => !done);
++	frm.dashboard.add_indicator(
++		next ? __("Fertilizer ticket: waiting for {0}", [next[0]]) : __("Fertilizer ticket: applied"),
++		next ? "orange" : "green"
++	);
++}
++
++frappe.ui.form.on("Material Request", {
++	setup(frm) {
++		frm.set_query("production_fa_block", () => ({
++			filters: { is_group: 0, status: "Active" },
++		}));
++	},
++	onload(frm) {
++		fa_groups();
++	},
++	refresh(frm) {
++		fa_sync(frm);
++		fa_sign_off_buttons(frm);
++	},
++	items_remove: fa_sync,
++	transaction_date: fa_app_week,
++	production_fa_block: fa_update_rates,
++	production_fa_area_ha: fa_update_rates,
++	production_is_fertilizer_request(frm) {
++		fa_app_week(frm);
++	},
++});
++
++frappe.ui.form.on("Material Request Item", {
++	item_group: fa_sync,
++	item_code: fa_sync,
++	qty: fa_update_rates,
++});
